@@ -7,7 +7,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	_onexit(_CrtDumpMemoryLeaks);
 #endif
 
-	asdf window;
+	 window;
 	window.create(hInstance, 800, 600, 100, true);
 
 	return 0;
