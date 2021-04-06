@@ -28,12 +28,12 @@ void BreakoutGame::onDraw() {
 	// draw blocks
 	int x = 0;
 	int y = 0;
-	for (int i = 0; i < 64; i++) {
+	for (int i = 0; i < blocks->size(); i++) {
 		blocks->at(i)->draw(this, x, y);
-		x += 100;
+		x += blocks->at(i)->getWidth();
 		if (x == 800) {
 			x = 0;
-			y += 50;
+			y += blocks->at(i)->getHeight();
 		}
 	}
 	// draw ball
