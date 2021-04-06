@@ -1,5 +1,7 @@
 #include <Windows.h>
 #include <crtdbg.h>
+#include <time.h>
+#include "BreakoutGame.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int show)
 {
@@ -7,8 +9,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	_onexit(_CrtDumpMemoryLeaks);
 #endif
 
-	 window;
-	window.create(hInstance, 800, 600, 100, true);
+	srand((int)time(NULL));
+
+	BreakoutGame window;
+	window.create(hInstance, 800, 800, 100, true);
 
 	return 0;
 }

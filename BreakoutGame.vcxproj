@@ -139,7 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BreakoutGame.cpp" />
+    <ClCompile Include="EasyGraphics.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BreakoutGame.h" />
+    <ClInclude Include="EasyGraphics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
