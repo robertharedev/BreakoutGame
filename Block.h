@@ -16,16 +16,14 @@ public:
 	int getHeight() const;
 
 private:
-	int x, y, penColour, health;
+	int x, y, penColour, fillColour, health, points;
 	const int WIDTH = 100;
 	const int HEIGHT = 50;
 	bool containsPowerup;
 	bool isDestroyed = false;
 
-	void initialiseHealth();
+	void initialiseProperties();
 };
 
 inline int Block::getWidth() const { return WIDTH; }
 inline int Block::getHeight() const { return HEIGHT; }
-
-inline void Block::initialiseHealth() { this->health = rand() % 3 + 1; }

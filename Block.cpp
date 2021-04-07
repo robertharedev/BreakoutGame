@@ -2,11 +2,8 @@
 #include <fstream>
 
 Block::Block(int x, int y) : x(x), y(y) {
-	// give block a random health between 1-3 inclusive
-	initialiseHealth();
-	
-	if (health == 3)
-		this->containsPowerup = true;
+	// give block a health/colour/powerup/points
+	initialiseProperties();
 }
 
 Block::~Block() {
@@ -44,25 +41,35 @@ void Block::drawBlocks(EasyGraphics* canvas, vector<Block*>* blocks) {
 		block->draw(canvas, block->x * block->getWidth(), block->y * block->getHeight());
 		it++;
 	}
-
-	/*int x = 0;
-	int y = 0;
-	for (int i = 0; i < blocks->size(); i++) {
-		blocks->at(i)->draw(canvas, x, y);
-		x += blocks->at(i)->getWidth();
-		if (x == 800) {
-			x = 0;
-			y += blocks->at(i)->getHeight();
-		}
-	}*/
 }
 
 void Block::draw(EasyGraphics* canvas, int x, int y) const {
 	// colour block based on health
-	if (health == 1) canvas->setBackColour(EasyGraphics::GREEN);
-	else if (health == 2) canvas->setBackColour(EasyGraphics::YELLOW);
-	else canvas->setBackColour(EasyGraphics::RED);
-
+	canvas->setBackColour(fillColour);
 	canvas->drawRectangle(x, y, WIDTH, HEIGHT, true);
 }
 
+void Block::initialiseProperties() {
+	this->health = rand() % 3 + 1; // random health between 1-3
+
+	// set colour based on health
+	switch (health)
+	{
+	case 1:
+		fillColour = EasyGraphics::GREEN;
+		points = 5;
+		break;
+	case 2:
+		fillColour = EasyGraphics::YELLOW;
+		points = 10;
+		break;
+	case 3:
+		fillColour = EasyGraphics::RED;
+		points = 20;
+		break;
+	}
+
+	float powerupChance = (float(rand()) / float((RAND_MAX)) * 1); // random float between 0-1
+	if (powerupChance < 0.1f) // 10% chance to have a powerup
+		containsPowerup = true;
+}
