@@ -5,7 +5,7 @@ BreakoutGame::BreakoutGame() {
 
 	// create blocks and their random positions
 	//blocks->push_back(new Block(100, 200, RED));
-	blocks = Block::generateBlocks();
+	blocks = Block::loadBlocks(L"blockPlacement.txt");
 }
 
 BreakoutGame::~BreakoutGame() {
@@ -13,6 +13,9 @@ BreakoutGame::~BreakoutGame() {
 		delete blocks->at(i);
 
 	delete blocks;
+
+	// delete paddle
+	// delete ball/s (may be many balls)
 }
 
 void BreakoutGame::onCreate() {
@@ -26,22 +29,42 @@ void BreakoutGame::onDraw() {
 	setPenColour(BLACK, 1);
 
 	// draw blocks
-	int x = 0;
-	int y = 0;
-	for (int i = 0; i < blocks->size(); i++) {
-		blocks->at(i)->draw(this, x, y);
-		x += blocks->at(i)->getWidth();
-		if (x == 800) {
-			x = 0;
-			y += blocks->at(i)->getHeight();
-		}
-	}
-	// draw ball
+	Block::drawBlocks(this, blocks);
 	// draw paddle
+
+	// draw ball
 
 	EasyGraphics::onDraw();
 }
 
-void BreakoutGame::onMouseMove(UINT nFlags, int x, int y) {
 
+
+// ########### I THINK THE PADDLE SHOULD HAVE THIS STUFF BUT IM KEEPING IT HERE FOR A BIT #######################
+
+void BreakoutGame::onChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+	/*
+	if (nChar == 'a' || nChar == 'A') {
+		paddle->setMovePaddleLeftID(101);
+		paddle->setMovePaddleLeftID(SetTimer(getHWND(), paddle->getMovePaddleLeftID(), 30, null));
+		lastTick = GetTickCount();
+	}
+	else if (nChar == 'd' || nChar == 'D') {
+		paddle->setMovePaddleRightID(102);
+		paddle->setMovePaddleRightID(SetTimer(getHWND(), paddle->getMovePaddleRightID(), 30, null));
+		lastTick = GetTickCount();
+	}*/
+}
+
+void BreakoutGame::onTimer(UINT nIDEvent) {
+	/*DWORD now = GetTickCount();
+	DWORD elapsed = now - lastTick;
+
+	if (nIDEvent == paddle->getMovePaddleLeftID())
+		x -= (moveSpeed * elapsed) / 1000;
+	else if (nIDEvent == paddle->getMovePaddleRightID())
+		x += (moveSpeed * elapsed) / 1000;
+
+	lastTick = now;
+	*/
+	onDraw();
 }

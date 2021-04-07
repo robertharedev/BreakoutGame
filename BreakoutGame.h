@@ -1,6 +1,8 @@
 #pragma once
 #include "EasyGraphics.h"
 #include "Block.h"
+//#include "Paddle.h"
+//#include "Ball.h"
 #include <vector>
 
 using namespace std;
@@ -11,14 +13,15 @@ public:
 	BreakoutGame();
 	~BreakoutGame();
 
-protected:
 	virtual void onCreate();
 	virtual void onDraw();
-	virtual void onMouseMove(UINT nFlags, int x, int y);
+	virtual void onChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual void onTimer(UINT nIDEvent);
 
 private:
-	vector<Block*>* blocks;
-	//Paddle
-	//Ball
+	vector<Block*>* blocks; // Blocks
+	// Paddle (Singleton)
+	// Ball
+	// Leaderboard (Singleton)
 };
 

@@ -6,11 +6,12 @@ using namespace std;
 class Block
 {
 public:
-	Block();
+	Block(int x, int y);
 	~Block();
 
+	static vector<Block*>* loadBlocks(const wchar_t* filename); // load block patterns from text file
+	static void drawBlocks(EasyGraphics* canvas, vector<Block*>* blocks);
 	void draw(EasyGraphics* canvas, int x, int y) const; // derived blocks draw themselves
-	static vector<Block*>* generateBlocks(); // randomly generate block patterns
 	int getWidth() const;
 	int getHeight() const;
 
@@ -19,7 +20,7 @@ private:
 	const int WIDTH = 100;
 	const int HEIGHT = 50;
 	bool containsPowerup;
-	bool beenHit = false;
+	bool isDestroyed = false;
 
 	void initialiseHealth();
 };
