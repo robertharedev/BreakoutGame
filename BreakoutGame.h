@@ -1,7 +1,7 @@
 #pragma once
 #include "EasyGraphics.h"
 #include "Block.h"
-//#include "Paddle.h"
+#include "Paddle.h"
 //#include "Ball.h"
 #include <vector>
 
@@ -20,7 +20,7 @@ public:
 
 private:
 	vector<Block*>* blocks; // Blocks
-	// Paddle (Singleton)
+	Paddle* paddle;  // Paddle              #######################      (Maybe Singleton)          ###############
 	// Ball
 	// Leaderboard (Singleton)
 };

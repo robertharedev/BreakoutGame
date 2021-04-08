@@ -143,11 +143,13 @@
     <ClCompile Include="BreakoutGame.cpp" />
     <ClCompile Include="EasyGraphics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Paddle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="BreakoutGame.h" />
     <ClInclude Include="EasyGraphics.h" />
+    <ClInclude Include="Paddle.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="blockPlacement.txt" />
