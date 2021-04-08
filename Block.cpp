@@ -52,31 +52,31 @@ void Block::drawBlocks(EasyGraphics* canvas, vector<Block*>* blocks) {
 
 void Block::draw(EasyGraphics* canvas, int x, int y) const {
 	// colour block based on health
+	canvas->setPenColour(fillColour, 1); // remove outline
 	canvas->setBackColour(fillColour);
 	canvas->drawRectangle(x, y, w, h, true);
 }
 
 void Block::initialiseProperties() {
-	this->health = rand() % 3 + 1; // random health between 1-3
+	float randFloat = (float(rand()) / float((RAND_MAX)) * 1); // random float between 0-1
 
-	// set colour based on health
-	switch (health)
-	{
-	case 1:
+	if (randFloat <= 0.5f) {								// 50% chance it is weak
+		health = 1;
 		fillColour = EasyGraphics::GREEN;
 		points = 5;
-		break;
-	case 2:
+	}
+	else if (randFloat > 0.5f && randFloat <= 0.85f) {		// 35% chance it is medium strength
+		health = 2;
 		fillColour = EasyGraphics::YELLOW;
 		points = 10;
-		break;
-	case 3:
+	}
+	else {													// 15% chance it is strong
+		health = 3;
 		fillColour = EasyGraphics::RED;
 		points = 20;
-		break;
 	}
 
 	float powerupChance = (float(rand()) / float((RAND_MAX)) * 1); // random float between 0-1
-	if (powerupChance < 0.1f) // 10% chance to have a powerup
+	if (powerupChance < 0.05f) // 5% chance to have a powerup
 		containsPowerup = true;
 }

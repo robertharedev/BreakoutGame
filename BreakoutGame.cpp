@@ -2,6 +2,8 @@
 
 BreakoutGame::BreakoutGame() {
 	setImmediateDrawMode(false);
+
+	ball = new Ball();
 }
 
 BreakoutGame::~BreakoutGame() {
@@ -9,8 +11,8 @@ BreakoutGame::~BreakoutGame() {
 		delete blocks->at(i);
 
 	delete blocks;
-	Paddle::deletePaddle();
-	// delete ball/s (may be many balls)
+	Paddle::deletePaddle(); // Paddle deletes itself
+	delete ball; // delete ball/s (may be many balls)
 }
 
 void BreakoutGame::onCreate() {
@@ -18,7 +20,8 @@ void BreakoutGame::onCreate() {
 
 	::SetWindowText(getHWND(), L"Breakout Game");
 
-	// create blocks from text file
+	// create blocks from text file 
+	// this is done after the window is created so the blocks are the correct width/height
 	blocks = Block::loadBlocks(L"blockPlacement.txt", getHWND());
 }
 
@@ -31,6 +34,7 @@ void BreakoutGame::onDraw() {
 	// draw paddle
 	Paddle::getPaddle()->draw(this);
 	// draw ball
+	ball->draw(this);
 
 	EasyGraphics::onDraw();
 }

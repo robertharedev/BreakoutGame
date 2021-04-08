@@ -11,6 +11,7 @@ Paddle::~Paddle() {
 }
 
 void Paddle::draw(EasyGraphics* canvas) const {
-	canvas->setBackColour(EasyGraphics::BLUE);
+	canvas->setPenColour(EasyGraphics::BLACK, 1);
+	canvas->setBackColour(EasyGraphics::BLACK);
 	canvas->drawRectangle(x, Y, WIDTH, HEIGHT, true);
 }

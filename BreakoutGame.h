@@ -2,7 +2,7 @@
 #include "EasyGraphics.h"
 #include "Block.h"
 #include "Paddle.h"
-//#include "Ball.h"
+#include "Ball.h"
 #include <vector>
 
 using namespace std;
@@ -21,5 +21,5 @@ public:
 private:
 	vector<Block*>* blocks; // Blocks
 	Paddle* getPaddle() const;  // Paddle (Singleton)
-	// Ball
+	Ball* ball; // Ball
 };
