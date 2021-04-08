@@ -4,27 +4,33 @@
 class Paddle
 {
 public:
-	Paddle();
+	static Paddle* getPaddle();
 	~Paddle();
 
 	void draw(EasyGraphics* canvas) const;
-	void moveLeft();
-	void moveRight();
+	void setPosition(int x);
+	static void deletePaddle();
 
 private:
-	int x = 300;
+	static Paddle* paddle;
+
+	Paddle();
+
+	int x;
 	const int Y = 700;
 	const int WIDTH = 150; // may make this non-const because it's size could change with a powerup
 	const int HEIGHT = 10;
-	int moveSpeed = 10;
 };
 
-inline void Paddle::moveLeft() {
-	if (x > 0) // cant move left off screen
-		x -= moveSpeed;
+inline Paddle* Paddle::getPaddle() {
+	if (!paddle)
+		paddle = new Paddle();
+
+	return paddle;
 }
 
-inline void Paddle::moveRight() {
-	if (x < 800 - WIDTH) // cant move right off screen
-		x += moveSpeed;
+inline void Paddle::deletePaddle() { delete paddle; }
+
+inline void Paddle::setPosition(int x) {
+	this->x = x - (WIDTH / 2);
 }

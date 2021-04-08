@@ -1,7 +1,7 @@
 #include "Block.h"
 #include <fstream>
 
-Block::Block(int x, int y) : x(x), y(y) {
+Block::Block(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {
 	// give block a health/colour/powerup/points
 	initialiseProperties();
 }
@@ -10,8 +10,15 @@ Block::~Block() {
 	
 }
 
-vector<Block*>* Block::loadBlocks(const wchar_t* filename) {
+vector<Block*>* Block::loadBlocks(const wchar_t* filename, HWND hwnd) {
 	vector<Block*>* blocks = new vector<Block*>();
+	// set block width/height based on size of canvas
+	RECT rect;
+	GetClientRect(hwnd, &rect);
+	int columns = 12;
+	int rows = 8;
+	int blockWidth = rect.right / (columns + 2);
+	int blockHeight = rect.bottom / (rows + 2) / 4;
 
 	// read through txt file and create a block with the correct x, y
 	ifstream fin(filename, ios::in);
@@ -21,7 +28,7 @@ vector<Block*>* Block::loadBlocks(const wchar_t* filename) {
 		fin >> x >> y;
 		while (!fin.eof()) {
 			// Create block
-			blocks->push_back(new Block(x, y));
+			blocks->push_back(new Block(x, y, blockWidth, blockHeight));
 
 			// read in the next line
 			fin >> x >> y;
@@ -38,7 +45,7 @@ void Block::drawBlocks(EasyGraphics* canvas, vector<Block*>* blocks) {
 	vector<Block*>::iterator it(blocks->begin());
 	while (it != blocks->end()) {
 		Block* block = *(it);
-		block->draw(canvas, block->x * block->getWidth(), block->y * block->getHeight());
+		block->draw(canvas, block->x * block->w, block->y * block->h);
 		it++;
 	}
 }
@@ -46,7 +53,7 @@ void Block::drawBlocks(EasyGraphics* canvas, vector<Block*>* blocks) {
 void Block::draw(EasyGraphics* canvas, int x, int y) const {
 	// colour block based on health
 	canvas->setBackColour(fillColour);
-	canvas->drawRectangle(x, y, WIDTH, HEIGHT, true);
+	canvas->drawRectangle(x, y, w, h, true);
 }
 
 void Block::initialiseProperties() {

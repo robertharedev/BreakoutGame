@@ -15,13 +15,11 @@ public:
 
 	virtual void onCreate();
 	virtual void onDraw();
-	virtual void onChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual void onMouseMove(UINT nFlags, int x, int y);
 	virtual void onTimer(UINT nIDEvent);
 
 private:
 	vector<Block*>* blocks; // Blocks
-	Paddle* paddle;  // Paddle              #######################      (Maybe Singleton)          ###############
+	Paddle* getPaddle() const;  // Paddle (Singleton)
 	// Ball
-	// Leaderboard (Singleton)
 };
-
