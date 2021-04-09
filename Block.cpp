@@ -1,6 +1,8 @@
 #include "Block.h"
 #include <fstream>
 
+int Block::destroyedBlocks = 0;
+
 Block::Block(int x, int y, int w, int h) : x(x), y(y), w(w), h(h) {
 	// give block a health/colour/powerup/points
 	initialiseProperties();
@@ -86,6 +88,7 @@ void Block::initialiseProperties() {
 void Block::updateProperties() {
 	if (health == 0) {
 		destroyed = true;
+		destroyedBlocks++;
 	}
 	if (health == 1) {
 		fillColour = EasyGraphics::GREEN;

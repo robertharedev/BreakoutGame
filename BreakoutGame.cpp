@@ -1,17 +1,18 @@
 #include "BreakoutGame.h"
 #include <string>
+#include <algorithm>
 
-BreakoutGame::BreakoutGame() : lives(3), score(0), showStartGameText(true) {
+using namespace std;
+
+BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false), gameWon(false) {
 	setImmediateDrawMode(false);
 
 	ball = new Ball();
 }
 
 BreakoutGame::~BreakoutGame() {
-	for (int i = 0; i < blocks->size(); i++)
-		delete blocks->at(i);
+	deleteBlocks();
 
-	delete blocks;
 	Paddle::deletePaddle(); // Paddle deletes itself
 	delete ball; // delete ball/s (may be many balls)
 }
@@ -29,14 +30,23 @@ void BreakoutGame::onCreate() {
 void BreakoutGame::onDraw() {
 	clearScreen(BLACK);
 
-	Block::drawBlocks(this, blocks);
-	Paddle::getPaddle()->draw(this);
-	ball->draw(this);
-	drawLives(this);
-	drawScore(this);
+	if (!gameOver || !gameWon) {
+		Block::drawBlocks(this, blocks);
+		Paddle::getPaddle()->draw(this);
+		ball->draw(this);
+		drawLives(this);
+		drawScore(this);
 
-	if (showStartGameText) drawStartGameText(this);
-	
+		if (showStartGameText)
+			drawStartGameText(this);
+
+		// win game condition
+		if (Block::getDestroyedBlockCount() == blocks->size()) {
+			gameWon = true;
+			drawGameWonScreen(this);
+		}
+	}
+	else drawGameOver(this);
 
 	EasyGraphics::onDraw();
 }
@@ -77,7 +87,7 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 		GetClientRect(getHWND(), &rect);
 		ball->CheckForBounce(&rect, Paddle::getPaddle());
 		
-		checkIfBallOutOfPlay(ball, &rect, moveBall);
+		checkIfBallOutOfPlay(&rect);
 
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
 		vector<Block*>::iterator it(blocks->begin());
@@ -135,13 +145,41 @@ void BreakoutGame::drawScore(EasyGraphics* canvas) const {
 	canvas->drawText(wlivesText, 50, 380);
 }
 
-void BreakoutGame::checkIfBallOutOfPlay(Ball* ball, RECT* rect, int timerID) {
+void BreakoutGame::checkIfBallOutOfPlay(RECT* rect) {
 	if (ball->getY() > rect->bottom) {
-		delete ball;
-		ball = new Ball();
-
+		// reset the game and remove lives
 		lives--;
-		KillTimer(getHWND(), timerID);
-		showStartGameText = true;
+		resetGame();
 	}
+
+	if (lives == 0) // check for game over
+		gameOver = true;
+}
+
+void BreakoutGame::drawGameOver(EasyGraphics* canvas) const {
+	canvas->setTextColour(WHITE);
+	canvas->setFont(70, L"");
+	canvas->drawText(L"GAME OVER", 100, 300);
+}
+
+void BreakoutGame::drawGameWonScreen(EasyGraphics* canvas) const {
+	canvas->setTextColour(WHITE);
+	canvas->setFont(70, L"");
+	canvas->drawText(L"YOU WIN", 100, 300);
+}
+
+void BreakoutGame::resetGame() {
+	ball->resetSpeed();
+	killTimer(moveBall);
+	ball->setPosition(400, 600);
+	showStartGameText = true;
+}
+
+void deleteBlock(Block* block) {
+	delete block;
+}
+
+void BreakoutGame::deleteBlocks() {
+	for_each(blocks->begin(), blocks->end(), deleteBlock);
+	delete blocks;
 }

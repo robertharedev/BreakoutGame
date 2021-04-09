@@ -13,6 +13,7 @@ public:
 	BreakoutGame();
 	~BreakoutGame();
 
+private:
 	virtual void onCreate();
 	virtual void onDraw();
 	virtual void onMouseMove(UINT nFlags, int x, int y);
@@ -22,12 +23,18 @@ public:
 	void drawLives(EasyGraphics* canvas) const;
 	void drawScore(EasyGraphics* canvas) const;
 	void drawStartGameText(EasyGraphics* canvas) const;
-	void removeLife();
-	void checkIfBallOutOfPlay(Ball* ball, RECT* rect, int timerID);
+	void drawGameOver(EasyGraphics* canvas) const;
+	void drawGameWonScreen(EasyGraphics* canvas) const;
 
-private:
+	void checkIfBallOutOfPlay(RECT* rect);
+	void removeLife();
+	void resetGame();
+
+	void deleteBlocks();
+
 	int lives;
 	int score;
+	int maxScore;
 
 	vector<Block*>* blocks; // Blocks
 	Paddle* getPaddle() const;  // Paddle (Singleton)
@@ -37,6 +44,8 @@ private:
 	DWORD lastTick;
 
 	bool showStartGameText;
+	bool gameOver;
+	bool gameWon;
 };
 
 inline void BreakoutGame::removeLife() { lives--; }

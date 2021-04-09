@@ -11,13 +11,15 @@ public:
 	void setPosition(int x, int y); // move ball by an amount
 	void CheckForBounce(RECT* rect, Paddle* paddle);
 
+	void reverseXSpeed();
+	void reverseYSpeed();
+	void resetSpeed();
+
 	int getX() const;
 	int getY() const;
 	int getXSpeed() const;
 	int getYSpeed() const;
 	int getRadius() const;
-	void reverseXSpeed();
-	void reverseYSpeed();
 
 private:
 	int x, y, r, xSpeed, ySpeed;

@@ -23,6 +23,8 @@ public:
 	int getPoints() const;
 	int getHealth() const;
 
+	static int getDestroyedBlockCount();
+
 	bool isDestroyed() const;
 	int calcHit(Ball* ball) const;
 
@@ -30,6 +32,8 @@ private:
 	int x, y, w, h, penColour, fillColour, health, points;
 	bool containsPowerup;
 	bool destroyed = false;
+
+	static int destroyedBlocks; // counting how many blocks have been destroyed so it can check if the player has won or not
 
 	void initialiseProperties();
 	void updateProperties(); // change colour/points
@@ -49,5 +53,7 @@ inline int Block::getY() const { return y; }
 
 inline int Block::getPoints() const { return points; }
 inline int Block::getHealth() const { return health; }
+
+inline int Block::getDestroyedBlockCount() { return destroyedBlocks; } // static
 
 inline bool Block::isDestroyed() const { return destroyed; }

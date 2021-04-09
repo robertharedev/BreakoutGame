@@ -1,8 +1,7 @@
 #include "Ball.h"
 
-Ball::Ball() : x(200), y(600), r(10) {
-	xSpeed = rand() % 5 + 3; // between 3 and 6 inclusive
-	ySpeed = -(rand() % 4 + 3); // between 3 and 5 negative so the ball moves up initially
+Ball::Ball() : x(400), y(600), r(10) {
+	resetSpeed();
 }
 
 Ball::~Ball() {
@@ -47,4 +46,9 @@ void Ball::CheckForBounce(RECT* rect, Paddle* paddle) {
 		}
 	}
 
+}
+
+void Ball::resetSpeed() {
+	xSpeed = rand() % 9 - 4; // between -4 and 4 inclusive
+	ySpeed = -(rand() % 4 + 3); // between 3 and 6 negative so the ball moves up initially
 }
