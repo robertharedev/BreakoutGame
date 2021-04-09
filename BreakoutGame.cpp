@@ -4,7 +4,7 @@
 
 using namespace std;
 
-BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false) {
+BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false), gameWon(false) {
 	setImmediateDrawMode(false);
 
 	ball = new Ball();
@@ -41,11 +41,15 @@ void BreakoutGame::onDraw() {
 		if (showStartGameText)
 			drawStartGameText(this);
 	}
-	else drawGameOver(this);
-	
-	// win game condition
-	if (Block::getDestroyedBlockCount() == blocks->size()) {
+	else if (gameWon && gameOver) { // win game condition
 		drawGameWonScreen(this);
+	}
+	else drawGameOver(this);
+
+	// sets gameWon to true
+	if (Block::getDestroyedBlockCount() == blocks->size()) {
+		gameWon = true;
+		gameOver = true;
 	}
 
 	EasyGraphics::onDraw();
@@ -167,8 +171,8 @@ void BreakoutGame::drawGameOver(EasyGraphics* canvas) const {
 
 void BreakoutGame::drawGameWonScreen(EasyGraphics* canvas) const {
 	canvas->setTextColour(WHITE);
-	canvas->setFont(70, L"");
-	canvas->drawText(L"YOU WIN", 100, 300);
+	canvas->setFont(90, L"");
+	canvas->drawText(L"YOU WIN!", 100, 300);
 }
 
 void BreakoutGame::resetGame() {

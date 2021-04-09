@@ -16,10 +16,18 @@ void Ball::draw(EasyGraphics* canvas) const {
 
 void Ball::CheckForBounce(RECT* rect, Paddle* paddle) {
 	// wall and ceiling collision
-	if (x + r >= rect->right || x - r <= rect->left)
+	if (x + r >= rect->right) {
+		setPosition(rect->right - r, y);
 		xSpeed *= -1;
-	if (y - r <= rect->top)
+	}
+	if (x - r <= rect->left) {
+		setPosition(rect->left + r, y);
+		xSpeed *= -1;
+	}
+	if (y - r <= rect->top) {
+		setPosition(x, rect->top + r);
 		ySpeed *= -1;
+	}
 
 	// paddle collision
 	int px = paddle->getX();
