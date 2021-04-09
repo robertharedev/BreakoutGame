@@ -149,7 +149,7 @@ void BreakoutGame::drawScore(EasyGraphics* canvas) const {
 }
 
 void BreakoutGame::checkIfBallOutOfPlay(RECT* rect) {
-	if (ball->getY() > rect->bottom) {
+	if (ball->getY() >= rect->bottom) {
 		// reset the game and remove lives
 		lives--;
 		resetGame();

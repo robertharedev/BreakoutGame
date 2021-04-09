@@ -16,9 +16,9 @@ void Ball::draw(EasyGraphics* canvas) const {
 
 void Ball::CheckForBounce(RECT* rect, Paddle* paddle) {
 	// wall and ceiling collision
-	if (x + r > rect->right || x - r < rect->left)
+	if (x + r >= rect->right || x - r <= rect->left)
 		xSpeed *= -1;
-	if (y - r < rect->top)
+	if (y - r <= rect->top)
 		ySpeed *= -1;
 
 	// paddle collision
