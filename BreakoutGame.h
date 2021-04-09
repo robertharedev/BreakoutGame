@@ -45,7 +45,6 @@ private:
 
 	bool showStartGameText;
 	bool gameOver;
-	bool gameWon;
 };
 
 inline void BreakoutGame::removeLife() { lives--; }

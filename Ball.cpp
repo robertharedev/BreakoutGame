@@ -28,7 +28,8 @@ void Ball::CheckForBounce(RECT* rect, Paddle* paddle) {
 	int ph = paddle->getHeight();
 
 	// if it hits paddle
-	if (y + r >= py && y + r <= py + ph && x >= px && x <= px + pw) {
+	// I don't check if the ball is under the paddle because at high speed, the ball flies through the paddle
+	if (y + r >= py && x >= px && x <= px + pw) { 
 		ySpeed *= -1; // bounce the ball up
 
 		// set x speed depending on where the ball hit the paddle
@@ -40,15 +41,11 @@ void Ball::CheckForBounce(RECT* rect, Paddle* paddle) {
 			xSpeed = 3;
 		else if (x >= px + (pw / 5 * 4) && x < px + pw) // far right portion
 			xSpeed = 6;
-		else { // if ball hits paddle in the middle, increase ball speed
-			ySpeed *= 1.2;
-			xSpeed *= 1.2; // increase ball speed by 40%
-		}
 	}
 
 }
 
 void Ball::resetSpeed() {
 	xSpeed = rand() % 9 - 4; // between -4 and 4 inclusive
-	ySpeed = -(rand() % 4 + 3); // between 3 and 6 negative so the ball moves up initially
+	ySpeed = -8;
 }

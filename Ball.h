@@ -14,15 +14,17 @@ public:
 	void reverseXSpeed();
 	void reverseYSpeed();
 	void resetSpeed();
+	void increaseSpeed();
 
 	int getX() const;
 	int getY() const;
-	int getXSpeed() const;
-	int getYSpeed() const;
+	float getXSpeed() const;
+	float getYSpeed() const;
 	int getRadius() const;
 
 private:
-	int x, y, r, xSpeed, ySpeed;
+	int x, y, r;
+	float xSpeed, ySpeed;
 };
 
 inline void Ball::setPosition(int x, int y) {
@@ -30,11 +32,16 @@ inline void Ball::setPosition(int x, int y) {
 	this->y = y;
 }
 
+inline void Ball::increaseSpeed() {
+	xSpeed *= 1.001f;
+	ySpeed *= 1.001f;
+}
+
 inline int Ball::getX() const { return x; }
 inline int Ball::getY() const { return y; }
-inline int Ball::getXSpeed() const { return xSpeed; }
-inline int Ball::getYSpeed() const { return ySpeed; }
+inline float Ball::getXSpeed() const { return xSpeed; }
+inline float Ball::getYSpeed() const { return ySpeed; }
 inline int Ball::getRadius() const { return r; }
 
-inline void Ball::reverseXSpeed() { xSpeed *= -1; }
-inline void Ball::reverseYSpeed() { ySpeed *= -1; }
+inline void Ball::reverseXSpeed() { xSpeed *= -1.0f; }
+inline void Ball::reverseYSpeed() { ySpeed *= -1.0f; }

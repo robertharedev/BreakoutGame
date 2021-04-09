@@ -4,7 +4,7 @@
 
 using namespace std;
 
-BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false), gameWon(false) {
+BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false) {
 	setImmediateDrawMode(false);
 
 	ball = new Ball();
@@ -30,23 +30,23 @@ void BreakoutGame::onCreate() {
 void BreakoutGame::onDraw() {
 	clearScreen(BLACK);
 
-	if (!gameOver || !gameWon) {
+	if (!gameOver) {
 		Block::drawBlocks(this, blocks);
 		Paddle::getPaddle()->draw(this);
 		ball->draw(this);
 		drawLives(this);
 		drawScore(this);
 
+		// draw start game text on screen reset
 		if (showStartGameText)
 			drawStartGameText(this);
-
-		// win game condition
-		if (Block::getDestroyedBlockCount() == blocks->size()) {
-			gameWon = true;
-			drawGameWonScreen(this);
-		}
 	}
 	else drawGameOver(this);
+	
+	// win game condition
+	if (Block::getDestroyedBlockCount() == blocks->size()) {
+		drawGameWonScreen(this);
+	}
 
 	EasyGraphics::onDraw();
 }
@@ -56,27 +56,25 @@ void BreakoutGame::onMouseMove(UINT nFlags, int x, int y) {
 }
 
 void BreakoutGame::onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
-	//DWORD now = GetTickCount64();
-	//DWORD elapsed = now - lastTick;
-
 	// start ball timer so it can move
 	if (nChar == VK_SPACE) { // if space is pressed
 
 		moveBall = 101;
-		moveBall = SetTimer(getHWND(), moveBall, 5, NULL);
+		moveBall = SetTimer(getHWND(), moveBall, 1, NULL);
 		lastTick = GetTickCount64();
 
 		// remove "start game" text
 		showStartGameText = false;
 	}
-
-	//lastTick = now;
 }
 
 void BreakoutGame::onTimer(UINT nIDEvent) {
+
+	//DWORD now = GetTickCount64();
+	//DWORD elapsed = now - lastTick;
+
 	// timer for animating ball's constant movement
 	if (nIDEvent == moveBall) {
-
 		// move ball
 		int x = ball->getX() + ball->getXSpeed();
 		int y = ball->getY() + ball->getYSpeed();
@@ -88,6 +86,9 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 		ball->CheckForBounce(&rect, Paddle::getPaddle());
 		
 		checkIfBallOutOfPlay(&rect);
+
+		// slowly increase ball speed;
+		ball->increaseSpeed();
 
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
 		vector<Block*>::iterator it(blocks->begin());
@@ -115,6 +116,8 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 
 			it++;
 		}
+
+		//lastTick = now;
 
 		onDraw();
 	}
