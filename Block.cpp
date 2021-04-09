@@ -80,3 +80,14 @@ void Block::initialiseProperties() {
 	if (powerupChance < 0.05f) // 5% chance to have a powerup
 		containsPowerup = true;
 }
+
+void Block::updateColour() {
+	switch (health) {
+	case 1:
+		fillColour = EasyGraphics::GREEN;
+		break;
+	case 2:
+		fillColour = EasyGraphics::YELLOW;
+		break;
+	}
+}
