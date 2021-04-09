@@ -19,7 +19,7 @@ BreakoutGame::~BreakoutGame() {
 void BreakoutGame::onCreate() {
 	EasyGraphics::onCreate();
 
-	::SetWindowText(getHWND(), L"Breakout Game");
+	::SetWindowText(getHWND(), L"Robert Hare OOP4CS: Breakout Game");
 
 	// create blocks from text file 
 	// this is done after the window is created so the blocks are the correct width/height
@@ -29,16 +29,14 @@ void BreakoutGame::onCreate() {
 void BreakoutGame::onDraw() {
 	clearScreen(BLACK);
 
-	// draw blocks
 	Block::drawBlocks(this, blocks);
-	// draw paddle
 	Paddle::getPaddle()->draw(this);
-	// draw ball
 	ball->draw(this);
-	// draw lives
 	drawLives(this);
-	// draw start game text
+	drawScore(this);
+
 	if (showStartGameText) drawStartGameText(this);
+	
 
 	EasyGraphics::onDraw();
 }
@@ -48,8 +46,12 @@ void BreakoutGame::onMouseMove(UINT nFlags, int x, int y) {
 }
 
 void BreakoutGame::onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+	//DWORD now = GetTickCount64();
+	//DWORD elapsed = now - lastTick;
+
+	// start ball timer so it can move
 	if (nChar == VK_SPACE) { // if space is pressed
-		// start ball timer so it can move
+
 		moveBall = 101;
 		moveBall = SetTimer(getHWND(), moveBall, 5, NULL);
 		lastTick = GetTickCount64();
@@ -57,80 +59,89 @@ void BreakoutGame::onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 		// remove "start game" text
 		showStartGameText = false;
 	}
+
+	//lastTick = now;
 }
 
 void BreakoutGame::onTimer(UINT nIDEvent) {
 	// timer for animating ball's constant movement
 	if (nIDEvent == moveBall) {
-		DWORD now = GetTickCount64();
-		DWORD elapsed = now - lastTick;
 
 		// move ball
 		int x = ball->getX() + ball->getXSpeed();
 		int y = ball->getY() + ball->getYSpeed();
 		ball->setPosition(x, y);
 
-		// check if it needs to bounce (edge of screen)
+		// check if it needs to bounce (edge of screen or paddle)
 		RECT rect;
 		GetClientRect(getHWND(), &rect);
-		ball->CheckForBounce(&rect);
+		ball->CheckForBounce(&rect, Paddle::getPaddle());
+		
+		checkIfBallOutOfPlay(ball, &rect, moveBall);
 
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
 		vector<Block*>::iterator it(blocks->begin());
 		while (it != blocks->end()) {
+			Block* block = *(it); // variable for readability
+
 			// collision detection
-			// variables for readability
-			Block* block = *(it);
-			int ballX = ball->getX();
-			int ballY = ball->getY();
-			int ballRad = ball->getRadius();
+			// check if any block is hit by ball
+			// only check for hit if block isn't destroyed
+			if (!block->isDestroyed()) {
+				int side = block->calcHit(ball);
+				if (side) { // if block has been hit by ball
+					// check which side of the block the ball hit so it can bounce in the correct direction
+					if (side == 1) {
+						ball->reverseYSpeed();
+					}
+					if (side == 2) {
+						ball->reverseXSpeed();
+					}
 
-			int blockX = block->getX() * block->getWidth();
-			int blockY = block->getY() * block->getHeight();
-
-			// check which side of the block the ball hit so it can bounce in the correct direction
-			if ((ballX < blockX &&					// LEFT OR RIGHT
-				ballX + ballRad > blockX &&
-				ballY > blockY && ballY < blockY + block->getHeight()) ||
-				(ballX > blockX + block->getWidth() &&
-				ballX - ballRad < blockX + block->getWidth() &&
-				ballY > blockY &&
-				ballY < blockY + block->getHeight()))
-			{
-				ball->reverseXSpeed();
-				score += block->getPoints();
-			}
-			else if ((ballY < blockY &&				// TOP OR BOTTOM
-				ballY + ballRad > blockY &&
-				ballX > blockX &&
-				ballX < blockX + block->getWidth()) ||
-				(ballY > blockY + block->getHeight() &&
-				ballY - ballRad < blockY + block->getHeight() &&
-				ballX < blockX + block->getWidth()))
-			{
-				ball->reverseYSpeed();
-				block->removeHealth();
-				score += block->getPoints();
+					score += block->getPoints();
+					block->removeHealth();
+				}
 			}
 
 			it++;
 		}
 
-		lastTick = now;
 		onDraw();
 	}
 }
 
-void BreakoutGame::drawLives(EasyGraphics* canvas) {
+void BreakoutGame::drawStartGameText(EasyGraphics* canvas) const {
 	canvas->setTextColour(WHITE);
+	canvas->drawText(L"Press [SPACE] to start", 250, 500);
+}
+
+void BreakoutGame::drawLives(EasyGraphics* canvas) const {
+	canvas->setTextColour(DARK_GREY);
 	canvas->setFont(20, L""); // Increase font size
 
 	// draw lives on screen
 	wstring livesText = L"Lives: " + to_wstring(lives);
 	const wchar_t* wlivesText = livesText.c_str();
-	canvas->drawText(wlivesText, 50, 720);
+	canvas->drawText(wlivesText, 50, 350);
 }
 
-void BreakoutGame::drawStartGameText(EasyGraphics* canvas) {
-	canvas->drawText(L"Press [SPACE] to start", 250, 500);
+void BreakoutGame::drawScore(EasyGraphics* canvas) const {
+	canvas->setTextColour(DARK_GREY);
+	canvas->setFont(20, L""); // Increase font size
+
+	// draw lives on screen
+	wstring livesText = L"Score: " + to_wstring(score);
+	const wchar_t* wlivesText = livesText.c_str();
+	canvas->drawText(wlivesText, 50, 380);
+}
+
+void BreakoutGame::checkIfBallOutOfPlay(Ball* ball, RECT* rect, int timerID) {
+	if (ball->getY() > rect->bottom) {
+		delete ball;
+		ball = new Ball();
+
+		lives--;
+		KillTimer(getHWND(), timerID);
+		showStartGameText = true;
+	}
 }

@@ -1,6 +1,5 @@
 #pragma once
-
-#include "EasyGraphics.h"
+#include "Paddle.h"
 
 class Ball
 {
@@ -10,7 +9,7 @@ public:
 
 	void draw(EasyGraphics* canvas) const;
 	void setPosition(int x, int y); // move ball by an amount
-	void CheckForBounce(RECT* rect);
+	void CheckForBounce(RECT* rect, Paddle* paddle);
 
 	int getX() const;
 	int getY() const;

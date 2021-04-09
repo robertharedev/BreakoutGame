@@ -11,6 +11,11 @@ public:
 	void setPosition(int x);
 	static void deletePaddle();
 
+	int getX();
+	int getY();
+	int getWidth();
+	int getHeight();
+
 private:
 	static Paddle* paddle;
 
@@ -34,3 +39,8 @@ inline void Paddle::deletePaddle() { delete paddle; }
 inline void Paddle::setPosition(int x) {
 	this->x = x - (WIDTH / 2);
 }
+
+inline int Paddle::getX() { return x; };
+inline int Paddle::getY() { return Y; };
+inline int Paddle::getWidth() { return WIDTH; };
+inline int Paddle::getHeight() { return HEIGHT; };

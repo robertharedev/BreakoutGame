@@ -19,9 +19,11 @@ public:
 	virtual void onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	virtual void onTimer(UINT nIDEvent);
 
-	void drawLives(EasyGraphics* canvas);
+	void drawLives(EasyGraphics* canvas) const;
+	void drawScore(EasyGraphics* canvas) const;
+	void drawStartGameText(EasyGraphics* canvas) const;
 	void removeLife();
-	void drawStartGameText(EasyGraphics* canvas);
+	void checkIfBallOutOfPlay(Ball* ball, RECT* rect, int timerID);
 
 private:
 	int lives;

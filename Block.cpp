@@ -51,10 +51,12 @@ void Block::drawBlocks(EasyGraphics* canvas, vector<Block*>* blocks) {
 }
 
 void Block::draw(EasyGraphics* canvas, int x, int y) const {
-	// colour block based on health
-	canvas->setPenColour(fillColour, 1); // remove outline
-	canvas->setBackColour(fillColour);
-	canvas->drawRectangle(x, y, w, h, true);
+	if (!isDestroyed()) {
+		// colour block based on health
+		canvas->setPenColour(fillColour, 1); // remove outline
+		canvas->setBackColour(fillColour);
+		canvas->drawRectangle(x, y, w, h, true);
+	}
 }
 
 void Block::initialiseProperties() {
@@ -81,13 +83,35 @@ void Block::initialiseProperties() {
 		containsPowerup = true;
 }
 
-void Block::updateColour() {
-	switch (health) {
-	case 1:
-		fillColour = EasyGraphics::GREEN;
-		break;
-	case 2:
-		fillColour = EasyGraphics::YELLOW;
-		break;
+void Block::updateProperties() {
+	if (health == 0) {
+		destroyed = true;
 	}
+	if (health == 1) {
+		fillColour = EasyGraphics::GREEN;
+		points = 5;
+	}
+	else if (health == 2) {
+		fillColour = EasyGraphics::YELLOW;
+		points = 10;
+	}
+}
+
+int Block::calcHit(Ball* ball) const {
+	int ballX = ball->getX();
+	int ballY = ball->getY();
+	int ballRad = ball->getRadius();
+	int blockX = x * w;
+	int blockY = y * h;
+
+	// if block has been hit
+	if (ballX + ballRad >= blockX &&
+		ballX - ballRad <= blockX + w &&
+		ballY + ballRad >= blockY &&
+		ballY - ballRad <= blockY + h) // if ball's edge is slightly within block
+	{
+		if ((ballX >= blockX && ballX <= blockX + w) && (ballY + ballRad >= blockY && ballY - ballRad <= blockY + h)) return 1;	// top/bottom side
+		if ((ballY >= blockY && ballY <= blockY + h) && (ballX + ballRad >= blockX && ballX - ballRad <= blockX + w)) return 2;						// left/right side
+	}
+	else return 0;
 }
