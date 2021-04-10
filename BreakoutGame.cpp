@@ -4,7 +4,7 @@
 
 using namespace std;
 
-BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false), gameWon(false) {
+BreakoutGame::BreakoutGame() : lives(3), score(0), maxScore(0), showStartGameText(true), gameOver(false), gameWon(false), lastTick(0), moveBall(0) {
 	setImmediateDrawMode(false);
 
 	ball = new Ball();
@@ -42,9 +42,9 @@ void BreakoutGame::onDraw() {
 			drawStartGameText(this);
 	}
 	else if (gameWon && gameOver) { // win game condition
-		drawGameWonScreen(this);
+		drawBillboardText(this, L"YOU WIN!", 100, 300, 90, GREEN);
 	}
-	else drawGameOver(this);
+	else drawBillboardText(this, L"GAME OVER", 100, 300, 70, RED);
 
 	// sets gameWon to true
 	if (Block::getDestroyedBlockCount() == blocks->size()) {
@@ -80,8 +80,8 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 	// timer for animating ball's constant movement
 	if (nIDEvent == moveBall) {
 		// move ball
-		int x = ball->getX() + ball->getXSpeed();
-		int y = ball->getY() + ball->getYSpeed();
+		float x = ball->getX() + ball->getXSpeed();
+		float y = ball->getY() + ball->getYSpeed();
 		ball->setPosition(x, y);
 
 		// check if it needs to bounce (edge of screen or paddle)
@@ -91,7 +91,7 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 		
 		checkIfBallOutOfPlay(&rect);
 
-		// slowly increase ball speed;
+		// slowly increase ball speed using operator overloading
 		ball->increaseSpeed();
 
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
@@ -154,8 +154,8 @@ void BreakoutGame::drawScore(EasyGraphics* canvas) const {
 
 void BreakoutGame::checkIfBallOutOfPlay(RECT* rect) {
 	if (ball->getY() >= rect->bottom) {
-		// reset the game and remove lives
-		lives--;
+		// reset the game and remove life
+		removeLife();
 		resetGame();
 	}
 
@@ -163,16 +163,10 @@ void BreakoutGame::checkIfBallOutOfPlay(RECT* rect) {
 		gameOver = true;
 }
 
-void BreakoutGame::drawGameOver(EasyGraphics* canvas) const {
-	canvas->setTextColour(WHITE);
-	canvas->setFont(70, L"");
-	canvas->drawText(L"GAME OVER", 100, 300);
-}
-
-void BreakoutGame::drawGameWonScreen(EasyGraphics* canvas) const {
-	canvas->setTextColour(WHITE);
-	canvas->setFont(90, L"");
-	canvas->drawText(L"YOU WIN!", 100, 300);
+void BreakoutGame::drawBillboardText(EasyGraphics* canvas, const wchar_t* text, int x, int y, int fontSize, int textColour) const {
+	canvas->setTextColour(textColour);
+	canvas->setFont(fontSize, L"");
+	canvas->drawText(text, x, y);
 }
 
 void BreakoutGame::resetGame() {

@@ -13,6 +13,9 @@ public:
 	BreakoutGame();
 	~BreakoutGame();
 
+	int getLives();
+	void setLives(int lives);
+
 private:
 	virtual void onCreate();
 	virtual void onDraw();
@@ -23,8 +26,11 @@ private:
 	void drawLives(EasyGraphics* canvas) const;
 	void drawScore(EasyGraphics* canvas) const;
 	void drawStartGameText(EasyGraphics* canvas) const;
-	void drawGameOver(EasyGraphics* canvas) const;
-	void drawGameWonScreen(EasyGraphics* canvas) const;
+
+	// billboard text that covers the screen
+	void drawBillboardText(EasyGraphics* canvas, const wchar_t* text, int x, int y, int fontSize, int textColour) const;
+
+	//BreakoutGame* operator -- (int); // int indicates postfix
 
 	void checkIfBallOutOfPlay(RECT* rect);
 	void removeLife();
@@ -49,3 +55,6 @@ private:
 };
 
 inline void BreakoutGame::removeLife() { lives--; }
+
+inline int BreakoutGame::getLives() { return lives; }
+inline void BreakoutGame::setLives(int lives) { this->lives = lives; }
