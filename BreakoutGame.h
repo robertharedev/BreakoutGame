@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class BreakoutGame : public EasyGraphics
+class BreakoutGame : public EasyGraphics // inheritance
 {
 public:
 	BreakoutGame();
