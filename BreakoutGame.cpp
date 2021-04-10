@@ -97,7 +97,7 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
 		vector<Block*>::iterator it(blocks->begin());
 		while (it != blocks->end()) {
-			// RTTI: dynamic casting
+			// RTTI dynamic casting
 			Block* block = dynamic_cast<Block*>(*(it)); // variable for readability
 
 			// collision detection
