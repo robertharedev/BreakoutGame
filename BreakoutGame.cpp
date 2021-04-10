@@ -113,7 +113,8 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 						ball->reverseXSpeed();
 					}
 
-					score += block->getPoints();
+					// template for adding to player's score
+					addToScore<int>(block->getPoints());
 					block->removeHealth();
 				}
 			}
@@ -147,14 +148,20 @@ void BreakoutGame::drawScore(EasyGraphics* canvas) const {
 	canvas->setFont(20, L""); // Increase font size
 
 	// draw lives on screen
-	wstring livesText = L"Score: " + to_wstring(score);
-	const wchar_t* wlivesText = livesText.c_str();
-	canvas->drawText(wlivesText, 50, 380);
+	wstring scoreText = L"Score: " + to_wstring(score);
+	const wchar_t* wScoreText = scoreText.c_str();
+	canvas->drawText(wScoreText, 50, 380);
+}
+
+BreakoutGame* BreakoutGame::operator-(BreakoutGame& bg) {
+	bg.setLives(bg.getLives() - 1);
+	return &bg;
 }
 
 void BreakoutGame::checkIfBallOutOfPlay(RECT* rect) {
 	if (ball->getY() >= rect->bottom) {
 		// reset the game and remove life
+		//BreakoutGame* operator-(BreakoutGame& asd);
 		removeLife();
 		resetGame();
 	}

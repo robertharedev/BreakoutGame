@@ -33,8 +33,8 @@ inline void Ball::setPosition(int x, int y) {
 }
 
 inline void Ball::increaseSpeed() {
-	xSpeed *= 1.001f;
-	ySpeed *= 1.001f;
+	xSpeed *= 1.0005f;
+	ySpeed *= 1.0005f;
 }
 
 inline int Ball::getX() const { return x; }
