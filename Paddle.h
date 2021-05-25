@@ -21,10 +21,11 @@ private:
 
 	Paddle();
 
-	int x;
-	const int Y = 700;
-	const int WIDTH = 150; // may make this non-const because it's size could change with a powerup
-	const int HEIGHT = 10;
+	// initialised in constructor initialisation list
+	int x; // not const as paddle moves on x-axis
+	const int Y;
+	const int WIDTH; // may make this non-const because it's size could change with a powerup
+	const int HEIGHT;
 };
 
 inline Paddle* Paddle::getPaddle() {

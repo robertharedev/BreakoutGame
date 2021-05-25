@@ -91,14 +91,14 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 		
 		checkIfBallOutOfPlay(&rect);
 
-		// slowly increase ball speed using operator overloading
+		// slowly increase ball speed
 		ball->increaseSpeed();
 
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
 		vector<Block*>::iterator it(blocks->begin());
 		while (it != blocks->end()) {
 			// RTTI dynamic casting
-			Block* block = dynamic_cast<Block*>(*(it)); // variable for readability
+			Block* block = (*(it)); // variable for readability
 
 			// collision detection
 			// check if any block is hit by ball
@@ -114,8 +114,8 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 						ball->reverseXSpeed();
 					}
 
-					// template for adding to player's score
-					addToScore<int>(block->getPoints());
+					// adding to player's score
+					addToScore(block->getPoints());
 					block->removeHealth();
 				}
 			}
@@ -154,15 +154,9 @@ void BreakoutGame::drawScore(EasyGraphics* canvas) const {
 	canvas->drawText(wScoreText, 50, 380);
 }
 
-BreakoutGame* BreakoutGame::operator-(BreakoutGame& bg) {
-	bg.setLives(bg.getLives() - 1);
-	return &bg;
-}
-
 void BreakoutGame::checkIfBallOutOfPlay(RECT* rect) {
 	if (ball->getY() >= rect->bottom) {
 		// reset the game and remove life
-		//BreakoutGame* operator-(BreakoutGame& asd);
 		removeLife();
 		resetGame();
 	}

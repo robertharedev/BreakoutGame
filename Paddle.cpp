@@ -2,7 +2,7 @@
 
 Paddle* Paddle::paddle = nullptr; // static so must instantiate
 
-Paddle::Paddle() {
+Paddle::Paddle() : Y(700), WIDTH(150), HEIGHT(10) {
 
 }
 
