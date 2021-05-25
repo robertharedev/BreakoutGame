@@ -97,7 +97,6 @@ void BreakoutGame::onTimer(UINT nIDEvent) {
 		// check through all blocks and if the ball x, y is within the block, remove health and bounce it
 		vector<Block*>::iterator it(blocks->begin());
 		while (it != blocks->end()) {
-			// RTTI dynamic casting
 			Block* block = (*(it)); // variable for readability
 
 			// collision detection
@@ -148,7 +147,7 @@ void BreakoutGame::drawScore(EasyGraphics* canvas) const {
 	canvas->setTextColour(DARK_GREY);
 	canvas->setFont(20, L""); // Increase font size
 
-	// draw lives on screen
+	// draw score on screen
 	wstring scoreText = L"Score: " + to_wstring(score);
 	const wchar_t* wScoreText = scoreText.c_str();
 	canvas->drawText(wScoreText, 50, 380);

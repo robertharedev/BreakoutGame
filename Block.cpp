@@ -114,7 +114,7 @@ int Block::calcHit(Ball* ball) const {
 		ballY - ballRad <= blockY + h)
 	{ // check which side of the block the ball hit
 		if ((ballX >= blockX && ballX <= blockX + w) && (ballY + ballRad >= blockY && ballY - ballRad <= blockY + h)) return 1;	// top/bottom side
-		if ((ballY >= blockY && ballY <= blockY + h) && (ballX + ballRad >= blockX && ballX - ballRad <= blockX + w)) return 2;						// left/right side
+		if ((ballY >= blockY && ballY <= blockY + h) && (ballX + ballRad >= blockX && ballX - ballRad <= blockX + w)) return 2;	// left/right side
 	}
 	else return 0;
 }
