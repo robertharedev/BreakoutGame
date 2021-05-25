@@ -1,8 +1,6 @@
-######################
-#  Robert Hare       #
-#  B9018060          #
-#  OOP Assignment 2  #
-######################
++---------------------+
+| Author: Robert Hare |
++---------------------+
 
 To play the game:
 
@@ -13,4 +11,4 @@ To play the game:
 
 Keep in mind: The ball speeds up slowly as you play so try and keep up!
 
-- Robert Hare B9018060
+- Robert Hare
