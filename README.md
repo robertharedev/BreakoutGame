@@ -1,6 +1,4 @@
-+---------------------+
-| Author: Robert Hare |
-+---------------------+
+# Breakout Game
 
 To play the game:
 
@@ -12,3 +10,5 @@ To play the game:
 Keep in mind: The ball speeds up slowly as you play so try and keep up!
 
 - Robert Hare
+
+Licensed under the [MIT License.](LICENSE)
